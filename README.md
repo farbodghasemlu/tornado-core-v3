@@ -1,4 +1,4 @@
-# tornado-modern
+# tornado-core-v3
 
 The Tornado Cash core contracts, ported to Solidity 0.8.37 / Cancun, with three new features:
 
@@ -143,7 +143,7 @@ script/Deploy.s.sol           full deployment (Base Sepolia defaults)
 ## Running it
 
 ```sh
-git clone --recursive <this repo> && cd tornado-modern
+git clone --recursive <this repo> && cd tornado-core-v3
 cd js && npm ci --ignore-scripts && node download-keys.js && cd ..   # ~34 MB, sha256-pinned
 forge test                                                           # ~1 min cold, proofs are cached in js/.cache
 BASE_SEPOLIA_RPC_URL=https://sepolia.base.org forge test             # + end-to-end on a Base Sepolia fork

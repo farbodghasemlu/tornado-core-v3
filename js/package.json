@@ -1,5 +1,5 @@
 {
-  "name": "tornado-modern-prover",
+  "name": "tornado-core-v3-prover",
   "private": true,
   "description": "Test/CLI helper: Tornado notes, MiMC Merkle tree and Groth16 proofs using the original 2020 trusted-setup keys",
   "scripts": {

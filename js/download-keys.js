@@ -19,7 +19,7 @@ const sha256 = (file) => crypto.createHash('sha256').update(fs.readFileSync(file
 function get(url, dest, redirects = 5) {
   return new Promise((resolve, reject) => {
     https
-      .get(url, { headers: { 'User-Agent': 'tornado-modern' } }, (res) => {
+      .get(url, { headers: { 'User-Agent': 'tornado-core-v3' } }, (res) => {
         if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location && redirects > 0) {
           res.resume()
           return resolve(get(res.headers.location, dest, redirects - 1))
