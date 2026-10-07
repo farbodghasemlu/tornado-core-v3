@@ -1,0 +1,51 @@
+[profile.default]
+src = "src"
+test = "test"
+script = "script"
+out = "out"
+libs = ["lib"]
+# Cancun gives us transient storage (EIP-1153). Base and every major L2 support it.
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 10_000
+# Tests shell out to js/ffi.js to build notes and Groth16 proofs with the original trusted setup.
+ffi = true
+fs_permissions = [{ access = "read", path = "./out" }, { access = "read", path = "./test/fixtures" }]
+# The 2020/2021 code is compiled verbatim with its old compilers; its warnings are not ours to fix.
+ignored_warnings_from = ["test/legacy", "lib/openzeppelin-contracts-v3", "src/verifier/Verifier.sol"]
+gas_reports = ["ETHTornado", "ERC20Tornado", "TornadoPaymaster", "TornadoWithdrawAccount", "Groth16Verifier"]
+remappings = [
+  "forge-std/=lib/forge-std/src/",
+  "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+  "account-abstraction/=lib/account-abstraction/contracts/",
+  "permit2/=lib/permit2/",
+  # the 2021 contracts in test/legacy/ (only import paths changed) build against OpenZeppelin 3.4, like the original repo
+  "@openzeppelin/contracts-v3/=lib/openzeppelin-contracts-v3/contracts/",
+]
+
+[profile.default.fuzz]
+runs = 256
+
+[profile.ci.fuzz]
+runs = 1024
+
+[rpc_endpoints]
+base = "${BASE_RPC_URL}"
+base_sepolia = "${BASE_SEPOLIA_RPC_URL}"
+
+[etherscan]
+base = { key = "${ETHERSCAN_API_KEY}", chain = 8453 }
+base_sepolia = { key = "${ETHERSCAN_API_KEY}", chain = 84532 }
+
+[lint]
+# Reviewed false positives:
+# - reentrancy-events: events follow staticcalls to the trusted MiMC hasher, or calls made inside the
+#   transient reentrancy guard / EntryPoint-only postOp, so no reentrant path can reorder them.
+# - require-revert-in-loop: the in-loop reverts (hasher failure, zeros() bounds) are intended hard failures.
+exclude_lints = ["reentrancy-events", "require-revert-in-loop"]
+ignore = ["src/verifier/Verifier.sol", "test/legacy/**"]
+
+[fmt]
+line_length = 120
+# Kept byte-for-byte as published: the 2020 ceremony verifier and the 2021 reference contracts.
+ignore = ["src/verifier/Verifier.sol", "test/legacy/**"]

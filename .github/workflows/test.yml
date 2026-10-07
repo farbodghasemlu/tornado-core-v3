@@ -1,0 +1,41 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  forge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Cache ceremony artifacts and proofs
+        uses: actions/cache@v4
+        with:
+          path: |
+            js/artifacts/withdraw.json
+            js/artifacts/withdraw_proving_key.bin
+            js/.cache
+          key: tornado-artifacts-v2.1-${{ hashFiles('test/**/*.sol') }}
+          restore-keys: tornado-artifacts-v2.1-
+
+      - name: Install prover and download 2020 trusted-setup keys
+        working-directory: js
+        run: npm ci --ignore-scripts && node download-keys.js
+
+      - run: forge fmt --check
+      - run: forge build --sizes
+      - name: forge test (including Base Sepolia fork)
+        run: forge test -vv
+        env:
+          BASE_SEPOLIA_RPC_URL: https://sepolia.base.org
+          FOUNDRY_PROFILE: ci

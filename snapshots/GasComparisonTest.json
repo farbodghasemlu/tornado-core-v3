@@ -1,0 +1,16 @@
+{
+  "erc20_deposit_legacy": "975338",
+  "erc20_deposit_modern": "950898",
+  "erc20_withdraw_legacy": "373672",
+  "erc20_withdraw_modern": "363034",
+  "eth_deposit_first_legacy": "941108",
+  "eth_deposit_first_modern": "918103",
+  "eth_deposit_second_legacy": "921003",
+  "eth_deposit_second_modern": "898006",
+  "eth_deposit_third_legacy": "920989",
+  "eth_deposit_third_modern": "897995",
+  "eth_withdraw_groth16Verifier_legacy": "380109",
+  "eth_withdraw_groth16Verifier_modern": "355844",
+  "eth_withdraw_legacy": "380109",
+  "eth_withdraw_modern": "373766"
+}

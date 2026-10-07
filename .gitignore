@@ -1,0 +1,14 @@
+# Foundry
+/out
+/cache
+/broadcast/*/31337
+/broadcast/**/dry-run
+
+# JS prover
+js/node_modules
+js/.cache
+# Ceremony artifacts (~34 MB) are downloaded by `npm run download` in js/
+js/artifacts/withdraw.json
+js/artifacts/withdraw_proving_key.bin
+
+.env
